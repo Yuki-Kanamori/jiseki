@@ -39,3 +39,6 @@ hist(B(boats), main = "Blue")
 
 layout(1) #delete the setting of plot
 imsub(img, x < 1100) %>% plot #trimming
+
+parmin(grayimg) %>% plot #focus on low pixel
+parmax(grayimg) %>% plot #focus on high pixel
