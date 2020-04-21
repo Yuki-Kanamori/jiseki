@@ -7,7 +7,7 @@ setwd("/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真/201610若鷹丸キ�
 # packages ------------------------------------------------------
 require(imager) #need XQuartz
 require(abind)
-
+require(tidyverse)
 
 # test for check the images (https://htsuda.net/archives/1985) -------------------------------------
 # https://note.com/hanaori/n/ne7124ba5e3ca
@@ -42,3 +42,18 @@ imsub(img, x < 1100) %>% plot #trimming
 
 parmin(grayimg) %>% plot #focus on low pixel
 parmax(grayimg) %>% plot #focus on high pixel
+
+par(mar = c(0,0,0,0)) #setting of plot (delete the margin)
+par(mar = c(5,5))
+mirror(grayimg, "x") %>% plot 
+mirror(grayimg, "y") %>% plot 
+
+exp_var = c()
+trgimg = imsub(grayimg, x < 1100)
+trgimg = img
+dim(trgimg)
+trgimg2 = (trgimg - mean(trgimg))/sd(trgimg) 
+trgimg2 = as.array(trgimg2)
+dim(trgimg2) = c(1, dim(trgimg2))[c(1,2,4)]
+par(mfrow = c(5,5))
+exp_var = abind(exp_var, trgimg2)
