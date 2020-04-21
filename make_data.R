@@ -37,4 +37,5 @@ hist(R(boats), main = "Red")
 hist(G(boats), main = "Green")
 hist(B(boats), main = "Blue")
 
+layout(1) #delete the setting of plot
 imsub(img, x < 1100) %>% plot #trimming
