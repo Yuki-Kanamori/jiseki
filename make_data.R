@@ -10,8 +10,9 @@ require(abind)
 
 
 # test for check the images (https://htsuda.net/archives/1985) -------------------------------------
+# https://note.com/hanaori/n/ne7124ba5e3ca
 img = load.image( "A510-30(内) 10.0 0.71x 71.jpg" )
-# plot( img ) #with axes
+plot(img) #with axes
 plot(img, axes = FALSE, xlab = "", ylab = "") #remove the axes from img and plot
 img # show information of img (colour channel = 3), class = cimg
 grayimg = grayscale(img)
@@ -20,8 +21,11 @@ grayimg #colour channel = 1
 dim(grayimg) #4-dims data [x,y,z(depth), colour channel] (4th dim = 1 when grayscale, and = 3 when colour)
 grayimg[,,1,1] #??
 grayimg[1,1,1,1] #pixcel value of the coordinate
+grayimg[ , , 1, 1 ][1:5,1:5] #1 is white, and 0 is black
+head(as.data.frame(img))
 plot(imlist(light = img^(1/3), original = img, dark = img^3), layout = "row") #change pixel and plot
 plot(imlist(light = grayscale(img) + .4, original = grayscale(img)), layout = "row") #increase pixel (i.e. bright) using add
+layout(1) #delete the setting of plot
 gimg = grayscale(img)
 gimg[gimg > .5] = 1
 gimg[gimg <= .5 ] = 0
@@ -33,3 +37,4 @@ hist(R(boats), main = "Red")
 hist(G(boats), main = "Green")
 hist(B(boats), main = "Blue")
 
+imsub(img, x < 1100) %>% plot #trimming
