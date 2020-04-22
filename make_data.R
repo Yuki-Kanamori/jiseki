@@ -11,8 +11,8 @@ require(tidyverse)
 
 # test for check the images (https://htsuda.net/archives/1985) -------------------------------------
 # https://note.com/hanaori/n/ne7124ba5e3ca
-img = load.image( "A510-30(???) 10.0 0.71x 71.jpg" )
-img = load.image("A450-46(???) 18.6 0.71x 243.jpg")
+img = load.image( "A510-3(内) 19.0 0.71x 251.jpg" )
+# img = load.image("A450-46(内) 18.6 0.71x 243.jpg")
 plot(img) #with axes
 plot(img, axes = FALSE, xlab = "", ylab = "") #remove the axes from img and plot
 img # show information of img (colour channel = 3), class = cimg
