@@ -74,7 +74,7 @@ for(year in year){
      path = paste(wd, "/", year, "/No", no, sep = "")
      list = list.files(path, pattern = "jpg")
      setwd(path)
-     for(length in 1:length(list)){
+     for(l in 1:length(list)){
        img = load.image(list[l])
        img = grayscale(img)
        img = imsub(img, x < 1100)
