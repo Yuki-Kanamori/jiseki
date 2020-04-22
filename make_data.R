@@ -1,8 +1,8 @@
 
 # setting directory ---------------------------------------------
-# setwd("/Users/Yuki/Dropbox/サンマ耳石")
+# setwd("/Users/Yuki/Dropbox/jiseki")
 # load("input_20_mat.rda")
-setwd("/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真/2016/No3")
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki/2016/No3")
 
 # packages ------------------------------------------------------
 require(imager) #need XQuartz
@@ -11,8 +11,8 @@ require(tidyverse)
 
 # test for check the images (https://htsuda.net/archives/1985) -------------------------------------
 # https://note.com/hanaori/n/ne7124ba5e3ca
-img = load.image( "A510-30(内) 10.0 0.71x 71.jpg" )
-img = load.image("A450-46(内) 18.6 0.71x 243.jpg")
+img = load.image( "A510-30(???) 10.0 0.71x 71.jpg" )
+img = load.image("A450-46(???) 18.6 0.71x 243.jpg")
 plot(img) #with axes
 plot(img, axes = FALSE, xlab = "", ylab = "") #remove the axes from img and plot
 img # show information of img (colour channel = 3), class = cimg
@@ -63,8 +63,8 @@ exp_var = abind(exp_var, trgimg2)
 
 
 # check imgs ------------------------------------------------------
-setwd("/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真")
-wd = "/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真"
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
+wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 year = 2016
 
 list_img = c()
@@ -99,8 +99,8 @@ for(year in year){
 
 
 # retry ---------------------------------------------------------
-setwd("/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真")
-wd = "/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真"
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
+wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 year = 2016
 
 list_img = c()
