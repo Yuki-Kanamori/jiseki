@@ -9,6 +9,9 @@ require(imager) #need XQuartz
 require(abind)
 require(tidyverse)
 
+devtools::install_github("rstudio/keras")
+devtools::install_github("rstudio/tensorflow")
+
 # test for check the images (https://htsuda.net/archives/1985) -------------------------------------
 # https://note.com/hanaori/n/ne7124ba5e3ca
 img = load.image( "A510-3(内) 19.0 0.71x 251.jpg" )
@@ -175,3 +178,14 @@ plot(t)
 t2 = resize(t, round(width(t)/5), round(height(t)/5))
 dim(t2) #218,307,1,1
 plot(t2)
+
+
+
+# check nakayama data -------------------------------------------
+setwd("~/Dropbox/otolith_ps")
+img = load.image("B16-001-01.bmp") %>% grayscale()
+plot(img)
+r_img = resize(img, round(width(img))/20, round(height(img))/20)
+plot(r_img)
+dim(img) #1280, 1024, 1, 1
+dim(r_img) #64, 51, 1, 1
