@@ -46,7 +46,7 @@ parmin(grayimg) %>% plot #focus on low pixel
 parmax(grayimg) %>% plot #focus on high pixel
 
 par(mar = c(0,0,0,0)) #setting of plot (delete the margin)
-par(mar = c(5,5))
+par(mfrow = c(5,5))
 mirror(grayimg, "x") %>% plot 
 mirror(grayimg, "y") %>% plot 
 
@@ -92,6 +92,45 @@ for(year in year){
         img = grayscale(img)
         img = imsub(img, x < 1100)
         list_img = list(list_img, img)  
+      }
+    }
+  }
+}
+
+
+# retry ---------------------------------------------------------
+setwd("/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真")
+wd = "/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真"
+year = 2016
+
+list_img = c()
+for(year in year){
+  if(year < 2016){
+    for(no in 1:9){
+      path = paste(wd, "/", year, "/No", no, sep = "")
+      list = list.files(path, pattern = "jpg")
+      setwd(path)
+      for(l in 1:length(list)){
+        img = load.image(list[l])
+        img = grayscale(img)
+        img = imsub(img, x < 1100)
+        list_img = list(list_img, img) 
+      }
+    } 
+  }else{
+    for(no in 1:5){
+      path = paste(wd, "/", year, "/No", no, sep = "")
+      list = list.files(path, pattern = "jpg")
+      setwd(path)
+      for(l in 1:length(list)){
+        # data = list[l]
+        img = load.image(list[l])
+        img = grayscale(img)
+        img = imsub(img, x < 1100)
+        # list_img = list(list_img, img)
+        # par(mfrow = c(10,10))
+        layout(t(1:10))
+        plot(img)  
       }
     }
   }
