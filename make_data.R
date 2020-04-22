@@ -104,7 +104,7 @@ for(year in year){
 # retry ---------------------------------------------------------
 setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
 wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
-year = 2016
+year = 2015
 
 list_img = c()
 par(mfrow = c(10, 10))
@@ -119,8 +119,9 @@ for(year in year){
       for(l in 1:length(list)){
         img = load.image(list[l])
         img = grayscale(img)
-        img = imsub(img, x < 1100)
-        list_img = list(list_img, img) 
+        img = imsub(img, x < 1090)
+        # list_img = list(list_img, img) 
+        plot(img, axes = FALSE, xlab = "", ylab = "")  
       }
     } 
   }else{
@@ -132,7 +133,7 @@ for(year in year){
         # data = list[l]
         img = load.image(list[l])
         img = grayscale(img)
-        img = imsub(img, x < 1100)
+        img = imsub(img, x < 1090)
         # list_img = list(list_img, img)
         # par(mfrow = c(10,10))
         plot(img)  
