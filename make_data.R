@@ -87,6 +87,7 @@ for(year in year){
       list = list.files(path, pattern = "jpg")
       setwd(path)
       for(l in 1:length(list)){
+        # data = list[l]
         img = load.image(list[l])
         img = grayscale(img)
         img = imsub(img, x < 1100)
@@ -95,4 +96,3 @@ for(year in year){
     }
   }
 }
-
