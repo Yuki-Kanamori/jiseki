@@ -146,3 +146,32 @@ par(mar = c(0,0,0,0))
 # list_img = list(list_img, img)
 # par(mfrow = c(10,10))
 plot(img)  
+
+
+# resize --------------------------------------------------------
+
+# setting directory ---------------------------------------------
+# setwd("/Users/Yuki/Dropbox/jiseki")
+# load("input_20_mat.rda")
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki/2016/No3")
+
+# packages ------------------------------------------------------
+require(imager) #need XQuartz
+require(abind)
+require(tidyverse)
+
+# test for check the images (https://htsuda.net/archives/1985) -------------------------------------
+# https://note.com/hanaori/n/ne7124ba5e3ca
+img = load.image( "A510-3(内) 19.0 0.71x 251.jpg" )
+# img = load.image("A450-46(内) 18.6 0.71x 243.jpg")
+plot(img) #with axes
+img # show information of img (colour channel = 3), class = cimg
+grayimg = grayscale(img)
+dim(grayimg) #2048, 1536, 1, 1
+plot(grayimg)
+t = imsub(grayimg, x < 1090)
+dim(t) #1089,1536,1,1
+plot(t)
+t2 = resize(t, round(width(t)/5), round(height(t)/5))
+dim(t2) #218,307,1,1
+plot(t2)
