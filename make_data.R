@@ -59,3 +59,41 @@ trgimg2 = as.array(trgimg2)
 dim(trgimg2) = c(1, dim(trgimg2)[c(1,2,4)])
 par(mfrow = c(5,5))
 exp_var = abind(exp_var, trgimg2)
+
+
+
+# check imgs ------------------------------------------------------
+setwd("/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真")
+wd = "/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真"
+year = 2016
+
+list_img = c()
+for(year in year){
+  if(year < 2016){
+   for(no in 1:9){
+     path = paste(wd, "/", year, "/No", no, sep = "")
+     list = list.files(path, pattern = "jpg")
+     setwd(path)
+     for(length in 1:length(list)){
+       img = load.image(path)
+       img = grayscale(img)
+       img = imsub(img, x < 1100)
+       list_img = list(list_img, img) 
+     }
+   } 
+  }else{
+    for(no in 1:5){
+      path = paste(wd, "/", year, "/No", no, sep = "")
+      list = list.files(path, pattern = "jpg")
+      setwd(path)
+      for(l in 1:length(list)){
+        data = list[1]
+        img = load.image(data)
+        img = grayscale(img)
+        img = imsub(img, x < 1100)
+        list_img = list(list_img, img)  
+      }
+    }
+  }
+}
+
