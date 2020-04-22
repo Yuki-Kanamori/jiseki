@@ -104,6 +104,9 @@ wd = "/Users/Yuki/Dropbox/sokouo1/キチジ耳石写真"
 year = 2016
 
 list_img = c()
+par(mfrow = c(10, 10))
+par(mar = c(0,0,0,0))
+
 for(year in year){
   if(year < 2016){
     for(no in 1:9){
@@ -129,9 +132,17 @@ for(year in year){
         img = imsub(img, x < 1100)
         # list_img = list(list_img, img)
         # par(mfrow = c(10,10))
-        layout(t(1:10))
         plot(img)  
       }
     }
   }
 }
+
+par(mfrow = c(10, 10))
+img = load.image(list[2])
+img = grayscale(img)
+img = imsub(img, x < 1100)
+par(mar = c(0,0,0,0))
+# list_img = list(list_img, img)
+# par(mfrow = c(10,10))
+plot(img)  
