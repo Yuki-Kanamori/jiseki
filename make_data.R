@@ -175,7 +175,8 @@ plot(grayimg)
 t = imsub(grayimg, x < 1090)
 dim(t) #1089,1536,1,1
 plot(t)
-t2 = resize(t, round(width(t)/5), round(height(t)/5))
+prop = 10
+t2 = resize(t, round(width(t)/prop), round(height(t)/prop))
 dim(t2) #218,307,1,1
 plot(t2)
 
