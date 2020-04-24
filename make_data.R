@@ -191,3 +191,50 @@ r_img = resize(img, round(width(img))/20, round(height(img))/20)
 plot(r_img)
 dim(img) #1280, 1024, 1, 1
 dim(r_img) #64, 51, 1, 1
+
+
+
+
+# load the data -------------------------------------------------
+require(tidyverse)
+
+# filelist
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
+master = read.csv("img_list.csv", fileEncoding = "CP932")
+no = master$no
+no[is.na(no)] = 2
+
+er = master$error 
+er[is.na(er)] = 0
+mir = master$mirror
+mir[is.na(mir)] = 0
+
+master$no = no
+master$error = er
+master$mirror = mir
+summary(master)
+
+master2 = master %>% filter(no == 2)
+
+wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
+prop = 10
+exp_var = c()
+for(i in 1:nrow(master2)){
+  # i = 1
+  list = master2[i, ]
+  path = paste(wd, "/", list$year, "/No", list$box, sep = "")
+  setwd(path)
+  data = paste(list$rawname)
+  img = load.image(data)
+  img = grayscale(img)
+  img = imsub(img, x < 1090)
+  img = resize(img, round(width(img)/prop), round(height(img)/prop))
+  
+  img = (img - mean(img))/sd(img)
+  img = as.array(img)
+  dim(img) = c(1, dim(img)[c(1,2,4)])
+  
+  exp_var = abind(exp_var, img, along = 1)
+}
+dim(img)
+
