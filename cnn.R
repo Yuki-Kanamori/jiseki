@@ -17,10 +17,15 @@ nr = nrow(data$figure) #1185
 sprit = sample(nr, replace = F, nr*0.85)
 nr*0.85 #1007
 
-data2 = list(data$figure[sprit,,,, drop=F], data$age[sprit, ])
+# data3 = list(data$figure[sprit,,,, drop=F], data$age[sprit, ])
+# data2 = list(data$figure[-sprit,,,, drop=F], data$age[-sprit, ])
 
-train = data$figure[sprit,,,, drop=F]
-test = data$figure[-sprit,,,, drop=F]
+x_train = data$figure[sprit,,,, drop=F]
+y_train = data$age
+y_train2 = y_train[sprit, drop = F]
+y_train = data$age[sprit, drop=F]
+x_test = data$figure[-sprit,,,, drop=F]
+y_test = data$age[-sprit,,,, drop=F]
 
 model_age_f <- keras_model_sequential()
 model_age_f %>% 
