@@ -214,14 +214,15 @@ master$error = er
 master$mirror = mir
 summary(master)
 
-master2 = master %>% filter(no == 2 & year != 2017)
+master2 = master %>% filter(no == 2)
+# master2 = master %>% filter(no == 2 & year != 2017)
 summary(master2)
 
 age = read.csv("age.csv", fileEncoding = "CP932") %>% na.omit()
 summary(age)
 age$age2 = as.character(age$age)
-#check = unique(age$age2) %>% data.frame()
-#write.csv(check, "age_check.csv")
+# check = unique(age$age2) %>% data.frame()
+# write.csv(check, "age_check.csv")
 check = read.csv("age_check.csv")
 head(age)
 head(check)
@@ -231,6 +232,7 @@ head(master2)
 head(age)
 master2 = merge(master2, age, by = c("year", "file"))
 master3 = master2 %>% select(year, box, rawname, file, age_cate,)
+summary(master3)
 
 wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 prop = 10
