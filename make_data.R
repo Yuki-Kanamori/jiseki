@@ -233,6 +233,8 @@ head(age)
 master2 = merge(master2, age, by = c("year", "file"))
 master3 = master2 %>% select(year, box, rawname, file, age_cate,)
 summary(master3)
+master3 = master3 %>% filter(rawname != "C410-12(外) 6.6 0.71x 16.jpg")
+
 
 wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 prop = 10
