@@ -1,6 +1,6 @@
 library(keras)
 library(abind)
-load("/Users/00007816/Dropbox/otolith_backup/input_20_mat.rda")
+load("/Users/Yuki/Dropbox/otolith_ps/input_20_mat.rda")
 
 train <- "sf"
 test <- "sf"
