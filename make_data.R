@@ -217,12 +217,28 @@ summary(master)
 master2 = master %>% filter(no == 2 & year != 2017)
 summary(master2)
 
+age = read.csv("age.csv", fileEncoding = "CP932") %>% na.omit()
+summary(age)
+age$age2 = as.character(age$age)
+#check = unique(age$age2) %>% data.frame()
+#write.csv(check, "age_check.csv")
+check = read.csv("age_check.csv")
+head(age)
+head(check)
+age = merge(age, check, by = "age2")
+
+head(master2)
+head(age)
+master2 = merge(master2, age, by = c("year", "file"))
+master3 = master2 %>% select(year, box, rawname, file, age_cate,)
+
 wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 prop = 10
 exp_var = c()
+age_list = c()
 for(i in 1:nrow(master2)){
-  # i = 1
-  list = master2[i, ]
+  i = 1
+  list = master3[i, ]
   path = paste(wd, "/", list$year, "/No", list$box, sep = "")
   setwd(path)
   data = paste(list$rawname)
@@ -234,8 +250,11 @@ for(i in 1:nrow(master2)){
   img = (img - mean(img))/sd(img)
   img = as.array(img)
   dim(img) = c(1, dim(img)[c(1,2,4)])
-  
   exp_var = abind(exp_var, img, along = 1)
+  
+  age_data = paste(list$age_cate)
+  age_list = abind(age_list, age_data)
 }
+
 dim(img)
 dim(exp)
