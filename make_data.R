@@ -214,7 +214,8 @@ master$error = er
 master$mirror = mir
 summary(master)
 
-master2 = master %>% filter(no == 2)
+master2 = master %>% filter(no == 2 & year != 2017)
+summary(master2)
 
 wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 prop = 10
@@ -237,4 +238,4 @@ for(i in 1:nrow(master2)){
   exp_var = abind(exp_var, img, along = 1)
 }
 dim(img)
-
+dim(exp)
