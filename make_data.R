@@ -236,8 +236,8 @@ wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 prop = 10
 exp_var = c()
 age_list = c()
-for(i in 1:nrow(master2)){
-  i = 1
+for(i in 1:nrow(master3)){
+  #i = 1
   list = master3[i, ]
   path = paste(wd, "/", list$year, "/No", list$box, sep = "")
   setwd(path)
