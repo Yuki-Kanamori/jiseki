@@ -294,4 +294,14 @@ for(i in 1:nrow(master4)){
 
 dim(img)
 dim(exp)
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
+save(exp_var, file = "exp_var.Rdata")
+save(age_list, file = "age_list.Rdata")
 
+age_list2 = age_list %>% data.frame() %>% mutate(freq = 1)
+colnames(age_list2)[1] = "age"
+age_list3 =  model.matrix(as.formula(~0+age), data = age_list2)
+  
+data = list(exp_var, age_list3)  
+save(data, file = "testdata.RData")  
+  
