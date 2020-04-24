@@ -195,9 +195,7 @@ dim(r_img) #64, 51, 1, 1
 
 
 
-# load the data -------------------------------------------------
-require(tidyverse)
-
+# check the size ------------------------------------------------
 # filelist
 setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
 master = read.csv("img_list.csv", fileEncoding = "CP932")
@@ -233,16 +231,50 @@ head(age)
 master2 = merge(master2, age, by = c("year", "file"))
 master3 = master2 %>% select(year, box, rawname, file, age_cate,)
 summary(master3)
-master3 = master3 %>% filter(rawname != "C410-12(外) 6.6 0.71x 16.jpg")
+# master3 = master3 %>% filter(rawname != "C410-12(外) 6.6 0.71x 16.jpg")"C510-16(外) 6.5 0.71x 12.jpg"
 
 
 wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
 prop = 10
-exp_var = c()
+size = matrix(NA, ncol = 2, nrow = nrow(master3))
+size1 = c()
+size2 = c()
 age_list = c()
 for(i in 1:nrow(master3)){
-  #i = 1
   list = master3[i, ]
+  path = paste(wd, "/", list$year, "/No", list$box, sep = "")
+  setwd(path)
+  data = paste(list$rawname)
+  img = load.image(data)
+  img = grayscale(img)
+  img = imsub(img, x < 1090)
+  img = resize(img, round(width(img)/prop), round(height(img)/prop))
+  d_size1 = paste(dim(img)[1])
+  d_size2 = paste(dim(img)[2])
+  # size1 = abind(size, d_size1)
+  # size2 = abind(size, d_size2)
+  size[i,1] = d_size1
+  size[i,2] = d_size2
+
+  age_data = paste(list$age_cate)
+  age_list = abind(age_list, age_data)
+}
+summary(size)
+size = data.frame(size)
+master3 = cbind(master3, size)
+summary(master3)
+master4 = master3 %>% na.omit() %>% filter(X2 != 120)
+
+
+
+# load the data -------------------------------------------------
+wd = "/Users/Yuki/Dropbox/sokouo1/jiseki"
+prop = 10
+exp_var = c()
+age_list = c()
+for(i in 1:nrow(master4)){
+  #i = 1
+  list = master4[i, ]
   path = paste(wd, "/", list$year, "/No", list$box, sep = "")
   setwd(path)
   data = paste(list$rawname)
@@ -262,3 +294,4 @@ for(i in 1:nrow(master3)){
 
 dim(img)
 dim(exp)
+
