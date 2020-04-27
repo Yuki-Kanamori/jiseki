@@ -78,3 +78,47 @@ y_pred <- round(result, 0)
 mistake <- which(y_pred[,1]-y_test[,1]!=0)
 acc <- 1 - length(mistake)/nrow(y_test)
 
+vector_to_image <- function(img)
+{
+  img <- t(apply(img, 1, rev))
+  par(mar=c(0,0,0,0))
+  image(img, col=gray.colors(128), axes=F)
+}
+
+if(1){
+  par(mfrow=c(3,3))
+  for(i in mistake)
+  {
+    vector_to_image(x_test[i,,,])
+  }
+}
+
+max_val <- c()
+min_val <- c()
+for(i in 1:nrow(result))
+{
+  max_val <- c(max_val, max(result[i,]))  
+  min_val <- c(min_val, min(result[i,]))  
+}
+max_err <- c()
+min_err <- c()
+for(i in mistake)
+{
+  max_err <- c(max_err, max(result[i,]))  
+  min_err <- c(min_err, min(result[i,]))  
+}
+
+mean(max_val)
+sd(max_val)
+mean(max_err)
+sd(max_err)
+mean(min_val)
+mean(min_err)
+
+y_test[mistake,]
+#result[mistake,]
+acc_list <- c(acc_list, acc)
+
+acc_list
+mean(acc_list)
+sd(acc_list)
