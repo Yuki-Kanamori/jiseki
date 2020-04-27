@@ -92,6 +92,24 @@ if(1){
     vector_to_image(x_test[i,,,])
   }
 }
+# not mistake imgs
+nrow(x_test[])
+nmist = x_test[-mistake,,,, drop=F]
+samp = sample(nrow(nmist), 30)
+nmist2 = nmist[samp,,,, drop=F]
+if(1){
+  par(mfrow=c(6,5))
+  for(i in 1:nrow(nmist2))
+  {
+    vector_to_image(nmist2[i,,,])
+  }
+}
+
+
+vector_to_image(x_test[1,,,])
+vector_to_image(x_test[2,,,])
+vector_to_image(x_test[3,,,])
+vector_to_image(x_test[4,,,])
 
 max_val <- c()
 min_val <- c()
@@ -122,3 +140,10 @@ acc_list <- c(acc_list, acc)
 acc_list
 mean(acc_list)
 sd(acc_list)
+
+#summarize model format
+# model_age_f %>% save_model_tf("model_age_f")
+# new_model <- load_model_tf("model_age_f")
+# summary(new_model)
+
+save_model_hdf5(model_age_f, file="/Users/Yuki/Dropbox/sokouo1/jiseki/model_age_f.hdf5")
