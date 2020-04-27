@@ -17,15 +17,23 @@ nr = nrow(data$figure) #1185
 sprit = sample(nr, replace = F, nr*0.85)
 nr*0.85 #1007
 
-# data3 = list(data$figure[sprit,,,, drop=F], data$age[sprit, ])
-# data2 = list(data$figure[-sprit,,,, drop=F], data$age[-sprit, ])
+data3 = list(data$figure[sprit,,,, drop=F], data$age[sprit, ])
+data2 = list(data$figure[-sprit,,,, drop=F], data$age[-sprit, ])
+names(data2) = c("figure", "age")
+names(data3) = c("figure", "age")
 
-x_train = data$figure[sprit,,,, drop=F]
-y_train = data$age
-y_train2 = y_train[sprit, drop = F]
-y_train = data$age[sprit, drop=F]
-x_test = data$figure[-sprit,,,, drop=F]
-y_test = data$age[-sprit,,,, drop=F]
+# x_train = data$figure[sprit,,,, drop=F]
+# y_train = data$age
+# y_train2 = y_train[sprit, drop=F]
+# y_train = data$age[sprit, drop=F]
+# x_test = data$figure[-sprit,,,, drop=F]
+# y_test = data$age[-sprit,,,, drop=F]
+
+x_train <- data3$figure[,,,, drop=F]
+y_train <- data3$age[,]
+x_test <- data2$figure[,,,, drop=F]
+y_test <- data2$age[,]
+
 
 model_age_f <- keras_model_sequential()
 model_age_f %>% 
@@ -69,3 +77,4 @@ result <- model_age_f %>% predict(x_test)
 y_pred <- round(result, 0)
 mistake <- which(y_pred[,1]-y_test[,1]!=0)
 acc <- 1 - length(mistake)/nrow(y_test)
+
