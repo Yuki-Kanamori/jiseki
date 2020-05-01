@@ -147,3 +147,10 @@ sd(acc_list)
 # summary(new_model)
 
 save_model_hdf5(model_age_f, file="/Users/Yuki/Dropbox/sokouo1/jiseki/model_age_f.hdf5")
+
+require(tidyverse)
+t = y_test %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = 1, type = "test_data")
+t2 = y_test[mistake, ] %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = 1, type = "mistake")
+t3 = rbind(t, t2)
+summ = c()
+summ =  rbind(summ, t3)
