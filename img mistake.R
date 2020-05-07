@@ -30,7 +30,20 @@ y_test <- data2$age[,]
 
 mis = mis_list %>% filter(times == i)
 mis = mis$mistake
+vector_to_image <- function(img)
+{
+  img <- t(apply(img, 1, rev))
+  par(mar=c(0,0,0,0))
+  image(img, col=gray.colors(128), axes=F)
+}
+
 par(mfrow=c(3,3))
 for(j in mis){
   vector_to_image(x_test[j,,,])
+}
+
+y_test2 = c()
+for(j in mis){
+  data = y_test[j, ]
+  y_test2 = rbind(y_test2, data)
 }
