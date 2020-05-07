@@ -151,3 +151,4 @@ g = ggplot(age_sum, aes(x = age_cate, y = count), stat = "identity")
 b = geom_bar(stat = "identity", position = "dodge")
 labs = labs(x = "Age", y = "Numbers", title = "Raw data")
 g+b+labs+theme_bw()
+
