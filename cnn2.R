@@ -102,6 +102,9 @@ nrow(summ)
 unique(summ$age)
 summ = summ %>% mutate(times = rep(1:10, each = 22), age = ifelse(age == "age10.", "age10+", summ$age))
 
+write.csv(summ, "summ.csv")
+write.csv(list_acc, "list_acc.csv")
+write.csv(list_mistake, "list_mistake.csv")
 
 require(ggplot2)
 g = ggplot(summ, aes(x = age, y = count, fill = type), stat = "identity")
