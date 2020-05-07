@@ -105,11 +105,49 @@ summ = summ %>% mutate(times = rep(1:10, each = 22), age = ifelse(age == "age10.
 write.csv(summ, "summ.csv")
 write.csv(list_acc, "list_acc.csv")
 write.csv(list_mistake, "list_mistake.csv")
+save(all_test, file = "all_test.RData")
 
-require(ggplot2)
-g = ggplot(summ, aes(x = age, y = count, fill = type), stat = "identity")
+
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
+summ = read.csv("summ.csv")
+age = read.csv("age.csv", fileEncoding = "CP932")
+age_check = read.csv("age_check.csv")
+
+require(tidyverse)
+require(plyr)
+
+# summary of mistake --------------------------------------------
+summ2 = ddply(summ, .(age, type), summarize, mean = mean(count), sd = sd(count))
+summ2 = summ2[-1, ]
+unique(summ2$age)
+summ2$age2 = ifelse(summ2$age == "age10.", "10+", paste0(str_sub(summ2$age, 4, 5)))
+summ2$age2 = factor(summ2$age2, levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"))
+summ2$cate = ifelse(summ2$age2 == "10+", "10+", "1-10")
+summ3 = summ2 %>% mutate(cate = "all")
+summ4 = rbind(summ2, summ3)
+summ4$cate = factor(summ4$cate, levels = c("all", "1-10", "10+"))
+
+g = ggplot(summ4, aes(x = age2, y = mean, fill = type), stat = "identity")
+# g = ggplot(tai_miya2, aes(x = taityo, y = mean), stat = "identity")
+b = geom_bar(stat = "identity", position = "dodge", width = 0.5)
+e = geom_errorbar(aes(ymin = summ4$mean-summ4$sd, ymax = summ4$mean+summ4$sd), stat = "identity", position = position_dodge(0.5), size = 0.3, width = 0.5)
+f = facet_wrap(~ cate, ncol = 1, scales = 'free')
+labs = labs(x = "Age", y = "Numbers (mean ± sd)", title = "Test data")
+g+b+e+f+labs+theme_bw()
+
+
+
+# summary of age ---------------------------------------------------
+summary(age)
+colnames(age)[2] = "age2"
+age = merge(age, age_check, by = "age2")
+
+age_sum = na.omit(age)
+age_sum = age_sum %>% group_by(age_cate) %>% dplyr::summarize(count = n())
+age_sum$age_cate = factor(age_sum$age_cate, levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"))
+
+g = ggplot(age_sum, aes(x = age_cate, y = count), stat = "identity")
 # g = ggplot(tai_miya2, aes(x = taityo, y = mean), stat = "identity")
 b = geom_bar(stat = "identity", position = "dodge")
-f = facet_wrap(~ times, ncol = 3, scales = 'free')
-labs = labs(x = "Age", y = "Numbers", title = "Test data")
-g+b+f+labs+theme_bw()
+labs = labs(x = "Age", y = "Numbers", title = "Raw data")
+g+b+labs+theme_bw()
