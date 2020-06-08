@@ -30,7 +30,7 @@ img = data$figure[,,,, drop=F]
 dim(img)
 
 data = list(img, step1, step2)
-names(data) = c("figure", "small", "age")
+names(data) = c("figure", "class", "age")
 save(data, file = "testdata2.RData")
 
 
