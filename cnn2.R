@@ -23,6 +23,7 @@ all_test = c()
 summ = c()
 
 for(i in 1:length(rep)){
+  i = 1
   set.seed(rep[i])
   nr = nrow(data$figure) #1185
   sprit = sample(nr, replace = F, nr*0.85)
