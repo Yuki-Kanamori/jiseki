@@ -97,3 +97,37 @@ for(i in 1:length(rep)){
   summ =  rbind(summ, t3)
   
 }
+
+
+nrow(list_mistake)
+nrow(summ)
+unique(summ$age)
+# summ = summ %>% mutate(times = rep(1:10, each = 22), age = ifelse(age == "age10.", "age10+", summ$age))
+
+write.csv(summ, "summ_step1.csv")
+write.csv(list_acc, "list_acc_step1.csv")
+write.csv(list_mistake, "list_mistake_step1.csv")
+save(all_test, file = "all_test_step1.RData")
+
+setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
+summ = read.csv("summ_step1.csv")
+age = read.csv("age.csv", fileEncoding = "CP932")
+age_check = read.csv("age_check.csv")
+
+require(tidyverse)
+require(plyr)
+
+# summary of mistake --------------------------------------------
+summ2 = ddply(summ, .(age, type), summarize, mean = mean(count), sd = sd(count))
+# summ2 = summ2[-1, ]
+unique(summ2$age)
+summ2 = summ2 %>% dplyr::rename(class = age)
+summ2 = summ2 %>% mutate(class = str_sub(summ2$class, 2, 7)) %>% mutate(class = ifelse(summ2$class == "1to5", "age1-5", "age6-10+"))
+
+g = ggplot(summ2, aes(x = class, y = mean, fill = type), stat = "identity")
+# g = ggplot(tai_miya2, aes(x = taityo, y = mean), stat = "identity")
+b = geom_bar(stat = "identity", position = "dodge", width = 0.5)
+e = geom_errorbar(aes(ymin = summ2$mean-summ2$sd, ymax = summ2$mean+summ2$sd), stat = "identity", position = position_dodge(0.5), size = 0.3, width = 0.5)
+# f = facet_wrap(~ cate, ncol = 1, scales = 'free')
+labs = labs(x = "Class", y = "Numbers (mean ± sd)", title = "2 step model")
+g+b+e+labs+theme_bw()
