@@ -104,13 +104,13 @@ nrow(summ)
 unique(summ$age)
 # summ = summ %>% mutate(times = rep(1:10, each = 22), age = ifelse(age == "age10.", "age10+", summ$age))
 
-write.csv(summ, "summ_step1.csv")
-write.csv(list_acc, "list_acc_step1.csv")
-write.csv(list_mistake, "list_mistake_step1.csv")
-save(all_test, file = "all_test_step1.RData")
+write.csv(summ, "summ_step1-2.csv")
+write.csv(list_acc, "list_acc_step1-2.csv")
+write.csv(list_mistake, "list_mistake_step1-2.csv")
+save(all_test, file = "all_test_step1-2.RData")
 
 setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
-summ = read.csv("summ_step1.csv")
+summ = read.csv("summ_step1-2.csv")
 age = read.csv("age.csv", fileEncoding = "CP932")
 age_check = read.csv("age_check.csv")
 
