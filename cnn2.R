@@ -5,7 +5,7 @@ require(abind)
 # install_tensorflow(gpu = TRUE)
 
 setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
-load("testdata.RData")
+load("testdata_notplus.RData")
 
 batch_size <- 256
 epochs <- 20
@@ -88,7 +88,7 @@ for(i in 1:length(rep)){
   
   all_test = abind(all_test, x_test[])
   
-  file = paste0("/Users/Yuki/Dropbox/sokouo1/jiseki/model_age_f_", i, ".hdf5")
+  file = paste0("/Users/Yuki/Dropbox/sokouo1/jiseki/model_age_notplus", i, ".hdf5")
   save_model_hdf5(model_age_f, file = file)
   
   t = y_test %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = 1, type = "test_data")
