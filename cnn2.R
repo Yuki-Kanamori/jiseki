@@ -11,19 +11,21 @@ batch_size <- 256
 epochs <- 20
 validation_split <- 0.1
 img_size <- dim(data$figure)[-1]
-rep <- 1
+rep <- 50
 
 set.seed(0)
 slist = unique(rpois(1000, lambda = 500))
 rep = sample(slist, 100, replace = FALSE)
+
+age_list = data3$age[,]
 
 list_acc = c()
 list_mistake = c()
 all_test = c()
 summ = c()
 
-for(i in 1:length(rep)){
-  i = 1
+for(i in 23:length(rep)){
+  # i = 4
   set.seed(rep[i])
   nr = nrow(data$figure) #1185
   sprit = sample(nr, replace = F, nr*0.85)
@@ -81,6 +83,7 @@ for(i in 1:length(rep)){
   result <- model_age_f %>% predict(x_test)
   y_pred <- round(result, 0)
   mistake <- which(y_pred[,1]-y_test[,1]!=0)
+  # if(nrow(mistake) ==  0)
   dfmist = data.frame(mistake = mistake, times = paste0(i))
   list_mistake = rbind(list_mistake, dfmist)
   acc <- 1 - length(mistake)/nrow(y_test)
@@ -91,22 +94,24 @@ for(i in 1:length(rep)){
   file = paste0("/Users/Yuki/Dropbox/sokouo1/jiseki/model_age_notplus", i, ".hdf5")
   save_model_hdf5(model_age_f, file = file)
   
-  t = y_test %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = 1, type = "test_data")
-  t2 = y_test[mistake, ] %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = i, type = "mistake")
+  t = y_test %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = paste(i), type = "test_data")
+  t2 = y_test[mistake, ] %>% data.frame() %>% gather(key = age, value = dam) %>% group_by(age) %>% summarize(count = sum(dam)) %>% mutate(times = paste(i), type = "mistake")
   t3 = rbind(t, t2)
   summ =  rbind(summ, t3)
   
 }
+
+summ2 = summ
 
 nrow(list_mistake)
 nrow(summ)
 unique(summ$age)
 summ = summ %>% mutate(times = rep(1:10, each = 22), age = ifelse(age == "age10.", "age10+", summ$age))
 
-write.csv(summ, "summ.csv")
-write.csv(list_acc, "list_acc.csv")
-write.csv(list_mistake, "list_mistake.csv")
-save(all_test, file = "all_test.RData")
+write.csv(summ, "summ_notplus.csv")
+write.csv(list_acc, "list_acc_notplus.csv")
+write.csv(list_mistake, "list_mistake_notplus.csv")
+save(all_test, file = "all_test_notplus.RData")
 
 
 setwd("/Users/Yuki/Dropbox/sokouo1/jiseki")
@@ -118,24 +123,45 @@ require(tidyverse)
 require(plyr)
 
 # summary of mistake --------------------------------------------
+# summ3 = summ2
 summ2 = ddply(summ, .(age, type), summarize, mean = mean(count), sd = sd(count))
 summ2 = summ2[-1, ]
 unique(summ2$age)
 summ2$age2 = ifelse(summ2$age == "age10.", "10+", paste0(str_sub(summ2$age, 4, 5)))
-summ2$age2 = factor(summ2$age2, levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "10+"))
-summ2$cate = ifelse(summ2$age2 == "10+", "10+", "1-10")
+unique(summ2$age2)
+summ2$age2 = factor(summ2$age2, levels = c("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "10+"))
+summ2$cate = ifelse(summ2$age2 == "10+", "10+", "1-15")
 summ3 = summ2 %>% mutate(cate = "all")
 summ4 = rbind(summ2, summ3)
-summ4$cate = factor(summ4$cate, levels = c("all", "1-10", "10+"))
+summ4$cate = factor(summ4$cate, levels = c("all", "1-15", "10+"))
 
 g = ggplot(summ4, aes(x = age2, y = mean, fill = type), stat = "identity")
 # g = ggplot(tai_miya2, aes(x = taityo, y = mean), stat = "identity")
 b = geom_bar(stat = "identity", position = "dodge", width = 0.5)
-e = geom_errorbar(aes(ymin = summ4$mean-summ4$sd, ymax = summ4$mean+summ4$sd), stat = "identity", position = position_dodge(0.5), size = 0.3, width = 0.5)
+e = geom_errorbar(aes(ymin = summ4$mean-summ4$sd, ymax = summ4$mean+summ4$sd), stat = "identity", position = position_dodge(0.5), size = 0.3, width = 0.3)
 f = facet_wrap(~ cate, ncol = 1, scales = 'free')
 labs = labs(x = "Age", y = "Numbers (mean ± sd)", title = "Test data")
-g+b+e+f+labs+theme_bw()
+th = theme(panel.grid.major = element_blank(),
+           panel.grid.minor = element_blank(),
+           axis.text.x = element_text(size = rel(1.8), colour = "black"),
+           axis.text.y = element_text(size = rel(1.8), colour = "black"),
+           axis.title.x = element_text(size = rel(2)),
+           axis.title.y = element_text(size = rel(2)),
+           legend.title = element_blank(),
+           legend.text = element_text(size = rel(1.8)),
+           strip.text.x = element_text(size = rel(1.8)))
+g+b+e+f+labs+theme_bw()+th
 
+mean(list_acc)
+
+test = summ %>% filter(type == "test_data")
+
+  
+acc_age = left_join(summ %>% filter(type == "test_data"), summ %>% filter(type == "mistake"), by = c("times", "age")) %>% mutate(acc = count.y/count.x)
+acc_age[is.na(acc_age)] = NA
+# acc_age2 = tidyr::replace_na(acc_age, 0) 
+acc_age = na.omit(acc_age)
+m_acc_age = ddply(acc_age, .(age), summarize, mean = 1-mean(acc), sd = sd(acc))
 
 
 # summary of age ---------------------------------------------------
